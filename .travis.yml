@@ -1,0 +1,15 @@
+language: node_js
+git:
+  depth: 3
+node_js:
+  - "6"
+  - "8"
+install:
+  - npm install
+script:
+  - npm build
+cache:
+  directories:
+    - node_modules
+notifications:
+  email: false

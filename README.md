@@ -1,5 +1,5 @@
 [![Build Status](https://www.travis-ci.org/calebpitan/contextmenu.svg?branch=master)](https://www.travis-ci.org/calebpitan/contextmenu)
-[![License](https://img.shields.io/badge/license-MIT-blue)](https://github.com/calebpitan/contextmenu/blob/master/LICENSE)
+[![GitHub license](https://img.shields.io/github/license/calebpitan/contextmenu?color=blue)](https://github.com/calebpitan/contextmenu/blob/master/LICENSE)
 
 # ContextMenu
 

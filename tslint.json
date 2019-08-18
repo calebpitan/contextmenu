@@ -17,7 +17,7 @@
     "eofline": false,
     "whitespace": [false, "check-module"],
     "no-angle-bracket-type-assertion": false,
-    "ordered-imports": false,
+    "ordered-imports": true,
     "quotemark": [true, "single", "avoid-escape"],
     "semicolon": [true, "never"],
     "object-curly-spacing":[true, "always"]

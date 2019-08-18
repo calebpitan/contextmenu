@@ -1,0 +1,41 @@
+{
+  "name": "contextmenu",
+  "version": "0.9.1",
+  "description": "Build context menu on mobile and desktop devices without much overhead",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm run build && npm run lint",
+    "build": "npm run rollup && npm run build.esm",
+    "rollup": "rollup --config",
+    "build.esm": "rollup --config rollup.config.esm.js",
+    "lint": "tslint --project tsconfig.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/calebpitan/contextmenu.git"
+  },
+  "keywords": [
+    "js",
+    "contextmenu",
+    "html",
+    "design",
+    "gui"
+  ],
+  "author": "Caleb Pitan",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/calebpitan/contextmenu/issues"
+  },
+  "homepage": "https://github.com/calebpitan/contextmenu#readme",
+  "devDependencies": {
+    "karma": "^4.2.0",
+    "karma-browserstack-launcher": "^1.5.1",
+    "karma-mocha": "^1.3.0",
+    "mocha": "^6.2.0",
+    "rollup": "^1.19.4",
+    "rollup-plugin-typescript3": "^1.1.2",
+    "tslint": "^5.18.0",
+    "tslint-eslint-rules": "^5.4.0",
+    "typescript": "^3.5.3"
+  }
+}

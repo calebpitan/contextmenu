@@ -9,7 +9,7 @@
     "lint": "tslint --project tsconfig.json",
     "rollup": "rollup --config",
     "rollup.esm": "cross-env ESM=true npm run rollup",
-    "test": "npm run build && npm run lint && npm run karma"
+    "test": "npm run build && npm run lint && npm run karma start"
   },
   "repository": {
     "type": "git",

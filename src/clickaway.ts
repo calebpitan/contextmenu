@@ -6,7 +6,7 @@ export function clickAway(src: HTMLElement, handler: () => any, away: Document |
   const event = 'click'
   const listener =  (mouseEvent: Event) => {
     const path = mouseEvent.composedPath()
-    if (!(path.find((target) => target === src))) {
+    if (!(path.find((target) => target === src)) && typeof handler === 'function') {
       handler()
     }
   }

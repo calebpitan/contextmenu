@@ -21,6 +21,8 @@ module.exports = function(config) {
     // list of files / patterns to load in the browser
     files: [
       'dist/contextmenu.js',
+      'node_modules/chai/chai.js',
+      'node_modules/mocha/mocha.js',
       'tests/*.js'
     ],
 

@@ -25,10 +25,7 @@ export default class Position {
   from({ x: x0, y: y0 }: Path) {
     const x = this.generateX(x0)
     const y = this.generateY(y0)
-    return {
-      x,
-      y
-    }
+    return new Path(x, y)
   }
 
   viewportExcess({ x, y }: Path): ViewPortQuery {

@@ -1,6 +1,3 @@
-//import mocha, { describe, it, beforeEach, afterEach } from 'mocha'
-//import chai from 'chai'
-
 describe('ContextMenu', function() {
   var assert = chai.assert
 

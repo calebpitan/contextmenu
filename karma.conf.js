@@ -20,7 +20,7 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      'dist/*!(.esm).js',
+      'dist/contextmenu.js',
       'tests/*.js'
     ],
 

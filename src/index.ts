@@ -57,7 +57,7 @@ export default class ContextMenu {
   }
 
   on(event: ContextMenuEvent, handler: (position?: Path) => void): this {
-    this.handlers[event] = handler
+    this.handlers[event] = handler.bind(this)
     return this
   }
 
@@ -84,7 +84,7 @@ export default class ContextMenu {
 
       id = setTimeout(() => {
         if (!touchMoved && typeof this.handlers[VALIDATE] === 'function') {
-          this.handlers[VALIDATE].call(this, new Path(response.x, response.y), this.ps.viewportExcess(signal))
+          this.handlers[VALIDATE].call(this, response, this.ps.viewportExcess(signal))
         } else if (touchMoved && typeof this.handlers[FAILED] === 'function') {
           this.handlers[FAILED].call(this)
         }
@@ -95,7 +95,7 @@ export default class ContextMenu {
       ctxEvent.preventDefault()
       const signal = new Path((<MouseEvent> ctxEvent).clientX, (<MouseEvent> ctxEvent).clientY)
       const response = this.ps.from(signal)
-      this.handlers[VALIDATE].call(this, new Path(response.x, response.y), this.ps.viewportExcess(signal))
+      this.handlers[VALIDATE].call(this, response, this.ps.viewportExcess(signal))
     }
 
     if (Device.isMobile || navigator.maxTouchPoints || navigator.msMaxTouchPoints) {

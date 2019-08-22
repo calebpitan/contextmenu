@@ -1,3 +1,5 @@
+import { findPath } from './utility/pathfinder'
+
 export interface ClickAwaySwitch {
   flip: () => void
   flap: () => void
@@ -6,7 +8,8 @@ export function clickAway(src: HTMLElement, handler: () => any, away: Document |
   const event = 'click'
   const listener =  (mouseEvent: Event) => {
     // @ts-ignore
-    const path = <EventTarget[]> mouseEvent.path || (mouseEvent.composedPath && mouseEvent.composedPath())
+    const path: EventTarget[] = <EventTarget[]> mouseEvent.path ||
+      (mouseEvent.composedPath && mouseEvent.composedPath()) || findPath(<EventTarget> mouseEvent.target)
     if (!(path.find((target) => target === src)) && typeof handler === 'function') {
       handler()
     }

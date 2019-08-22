@@ -1,9 +1,18 @@
+function findPath(target, path) {
+    if (path === void 0) { path = [target]; }
+    var Target = target;
+    if (Target.parentNode !== null)
+        path.push(Target.parentNode);
+    return Target.parentNode !== null ? findPath(Target.parentNode, path) : path;
+}
+
 function clickAway(src, handler, away) {
     if (away === void 0) { away = document; }
     var event = 'click';
     var listener = function (mouseEvent) {
         // @ts-ignore
-        var path = mouseEvent.path || (mouseEvent.composedPath && mouseEvent.composedPath());
+        var path = mouseEvent.path ||
+            (mouseEvent.composedPath && mouseEvent.composedPath()) || findPath(mouseEvent.target);
         if (!(path.find(function (target) { return target === src; })) && typeof handler === 'function') {
             handler();
         }
@@ -150,7 +159,7 @@ var ContextMenu = /** @class */ (function () {
         this.ps.type = this.positioning;
     };
     ContextMenu.prototype.on = function (event, handler) {
-        this.handlers[event] = handler;
+        this.handlers[event] = handler.bind(this);
         return this;
     };
     ContextMenu.prototype.activate = function () {

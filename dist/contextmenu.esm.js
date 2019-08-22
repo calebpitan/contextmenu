@@ -2,7 +2,8 @@ function clickAway(src, handler, away) {
     if (away === void 0) { away = document; }
     var event = 'click';
     var listener = function (mouseEvent) {
-        var path = mouseEvent.composedPath();
+        // @ts-ignore
+        var path = mouseEvent.path || (mouseEvent.composedPath && mouseEvent.composedPath());
         if (!(path.find(function (target) { return target === src; })) && typeof handler === 'function') {
             handler();
         }

@@ -77,7 +77,6 @@ describe('Functional Interaction', function() {
     } else {
       sendMouseSignal(200, 180, src, null, function() {
         assert.strictEqual(dest.style.visibility, 'visible', 'contextmenu did not validate')
-        sendTouchSignal(200, 180, src, 'touchend') // end the touchevent started
         done()
       })
     }

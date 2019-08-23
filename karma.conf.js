@@ -68,6 +68,8 @@ module.exports = function(config) {
       retryLimit: 2
     },
 
+    captureTimeout: 90000,
+
     customLaunchers: browsers,
 
     // start these browsers

@@ -6,9 +6,9 @@ const browsers = {
     os_version: '8.0',
     real_mobile: true
   },
-  iphoneX: {
+  iphone8: {
     base: 'BrowserStack',
-    device: 'iPhone X',
+    device: 'iPhone 8',
     os: 'ios',
     os_version: '11.0',
     real_mobile: true

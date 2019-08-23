@@ -6,13 +6,6 @@ const browsers = {
     os_version: '8.0',
     real_mobile: true
   },
-  iphone8: {
-    base: 'BrowserStack',
-    device: 'iPhone 8',
-    os: 'ios',
-    os_version: '11.0',
-    real_mobile: true
-  },
   chromeWin10: {
     base: 'BrowserStack',
     os: 'Windows',

@@ -23,7 +23,7 @@ module.exports = function(config) {
       'dist/contextmenu.js',
       'node_modules/chai/chai.js',
       'node_modules/mocha/mocha.js',
-      'tests/*.js'
+      'tests/**/*.js'
     ],
 
 

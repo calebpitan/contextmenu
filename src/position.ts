@@ -15,7 +15,7 @@ export default class Position {
   constructor(box: Box2D, elementBox: Box2D) {
     this.box = box
     this.elementBox = elementBox
-    this.positioning = 'absolute'
+    this.positioning = 'relative'
   }
 
   set type(position: Positioning) {
@@ -35,30 +35,40 @@ export default class Position {
       right: false,
       bottom: false
     }
-    vpq.right = this.elementBox.width + x > this.box.width
-    vpq.bottom = this.elementBox.height + y > this.box.height
+    if (this.positioning !== 'fixed') {
+      vpq.right = this.elementBox.width + x > this.box.width
+      vpq.bottom = this.elementBox.height + y > this.box.height
+    }
     return vpq
   }
 
   private generateX(x: number): number {
-    if (this.positioning === 'relative') {
+    if (this.positioning === 'absolute') {
       return this.elementBox.width + x > this.box.width ? x - this.elementBox.width : x
+    } else if (this.positioning === 'static') {
+      return x
+    } else if (this.positioning === 'fixed') {
+      return (this.box.width - this.elementBox.width) / 2
     }
-    return this.getAbsoluteX(x)
+    return this.getRelativeX(x)
   }
 
   private generateY(y: number): number {
-    if (this.positioning === 'relative') {
+    if (this.positioning === 'absolute') {
       return this.elementBox.height + y > this.box.height ? y - this.elementBox.height : y
+    } else if (this.positioning === 'static') {
+      return y
+    } else if (this.positioning === 'fixed') {
+      return (this.box.height - this.elementBox.height) / 2
     }
-    return this.getAbsoluteY(y)
+    return this.getRelativeY(y)
   }
 
-  private getAbsoluteX(x: number): number {
+  private getRelativeX(x: number): number {
     return this.elementBox.width + x > this.box.width ? this.box.width - x : x
   }
 
-  private getAbsoluteY(y: number): number {
+  private getRelativeY(y: number): number {
     return this.elementBox.height + y > this.box.height ? this.box.height - y : y
   }
 }

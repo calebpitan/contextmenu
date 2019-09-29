@@ -16,6 +16,9 @@ const Events = {
   CTXMENU: 'contextmenu'
 }
 const EVENT_OPT = true
+const NAME: string = 'ContextMenu'
+// @ts-ignore
+const DUMP: object | null = window[NAME]
 
 export interface Handler {
   [VALIDATE]: (position: Path, viewportQuery: ViewPortQuery) => void
@@ -43,14 +46,24 @@ export default class ContextMenu {
     this.src = src
     this.dest = dest
     this.timeout = 800
-    this.positioning = 'absolute'
+    this.positioning = 'relative'
     this.handlers = <Handler> {}
     const box = new Box2D(0, 0, windowSize.width, windowSize.height)
     const box2 = new Box2D(0, 0, this.dest.offsetWidth, this.dest.offsetHeight)
     this.ps = new Position(box, box2)
   }
 
-  setup(setup: ContextMenuSetup = { timeout: 800, position: 'absolute' }) {
+  // tslint:disable-next-line:member-ordering
+  static namespace(name: string) {
+    // @ts-ignore
+    window[name] = window[name] || {}
+    // @ts-ignore
+    window[name][NAME] = ContextMenu
+    // @ts-ignore
+    window[NAME] = DUMP
+  }
+
+  setup(setup: ContextMenuSetup = { timeout: 800, position: 'relative' }) {
     this.timeout = setup.timeout
     this.positioning = setup.position
     this.ps.type = this.positioning
@@ -66,8 +79,8 @@ export default class ContextMenu {
       touchMoved = true
     }
     const end: () => void = () => {
-      this.src.removeEventListener(Events.TOUCHMOVE, move, true)
-      this.src.removeEventListener(Events.TOUCHEND, end, true)
+      this.src.removeEventListener(Events.TOUCHMOVE, move, EVENT_OPT)
+      this.src.removeEventListener(Events.TOUCHEND, end, EVENT_OPT)
       clearTimeout(id)
     }
     let touchMoved: boolean = false
@@ -80,11 +93,11 @@ export default class ContextMenu {
       this.src.addEventListener(Events.TOUCHEND, end, EVENT_OPT)
 
       const signal = new Path((<TouchEvent> touchEvent).touches[0].clientX, (<TouchEvent> touchEvent).touches[0].clientY)
-      const response = this.ps.from(signal)
+      const coords = this.ps.from(signal)
 
       id = setTimeout(() => {
         if (!touchMoved && typeof this.handlers[VALIDATE] === 'function') {
-          this.handlers[VALIDATE].call(this, response, this.ps.viewportExcess(signal))
+          this.handlers[VALIDATE].call(this, coords, this.ps.viewportExcess(signal))
         } else if (touchMoved && typeof this.handlers[FAILED] === 'function') {
           this.handlers[FAILED].call(this)
         }
@@ -98,7 +111,7 @@ export default class ContextMenu {
       this.handlers[VALIDATE].call(this, response, this.ps.viewportExcess(signal))
     }
 
-    if (Device.isMobile || navigator.maxTouchPoints || navigator.msMaxTouchPoints) {
+    if (Device.isMobile && (navigator.maxTouchPoints || navigator.msMaxTouchPoints)) {
       this.src.addEventListener(Events.TOUCHSTART, this.start, EVENT_OPT)
     } else {
       this.src.addEventListener(Events.CTXMENU, this.ctxhandler , EVENT_OPT)

@@ -4,44 +4,6 @@ describe('Functional Interaction', function() {
   var dest = document.createElement('div')
   var ctxMenu = null
 
-  function sendTouchSignal(x, y, element, eventType, callback) {
-    if (eventType == void 0) eventType = 'touchstart'
-    var touchObj = new Touch({
-      identifier: Date.now(),
-      target: element,
-      clientX: x,
-      clientY: y,
-      radiusX: 2.5,
-      radiusY: 2.5,
-      rotationAngle: 10,
-      force: 0.5
-    })
-    var touchEvent = new TouchEvent(eventType, {
-      cancelable: true,
-      bubbles: true,
-      touches: [touchObj],
-      targetTouches: [],
-      changedTouches: [touchObj],
-      shiftKey: true
-    })
-    element.dispatchEvent(touchEvent)
-    if (typeof callback === 'function') setTimeout(callback, 10)
-  }
-
-  function sendMouseSignal(x, y, element, eventType, callback) {
-    if (eventType == void 0) eventType = 'contextmenu'
-    var mouseEvent = new MouseEvent('contextmenu', {
-      bubbles: true,
-      cancelable: true,
-      view: window,
-      buttons: 2,
-      clientX: x,
-      clientY: y
-    })
-    element.dispatchEvent(mouseEvent)
-    if (typeof callback === 'function') setTimeout(callback, 10)
-  }
-
   beforeEach(function() {
     dest.className = 'contextmenu'
     dest.style.width = '250px'
@@ -55,7 +17,7 @@ describe('Functional Interaction', function() {
   })
 
   afterEach(function() {
-    document.body.removeChild(dest)
+    //document.body.removeChild(dest)
     ctxMenu.deactivate()
   })
 
@@ -69,18 +31,17 @@ describe('Functional Interaction', function() {
     })
     ctxMenu.activate()
     if (navigator.maxTouchPoints) {
-      sendTouchSignal(200, 180, src, null, function() {
+      testKit.sendTouchSignal(200, 180, src, null, function() {
         assert.strictEqual(dest.style.visibility, 'visible', 'contextmenu did not validate')
-        sendTouchSignal(200, 180, src, 'touchend') // end the touchevent started
+        testKit.sendTouchSignal(200, 180, src, 'touchend') // end the touchevent started
         done()
       })
     } else {
-      sendMouseSignal(200, 180, src, null, function() {
+      testKit.sendMouseSignal(200, 180, src, null, null, function() {
         assert.strictEqual(dest.style.visibility, 'visible', 'contextmenu did not validate')
         done()
       })
     }
-
   })
 
   it('dest should become hidden on click-away', function() {
@@ -96,15 +57,14 @@ describe('Functional Interaction', function() {
     })
     ctxMenu.activate()
     if (navigator.maxTouchPoints) {
-      sendTouchSignal(200, 180, src)
+      testKit.sendTouchSignal(200, 180, src)
       src.click()
-      sendTouchSignal(200, 180, src, 'touchend') // end the touchevent started
+      testKit.sendTouchSignal(200, 180, src, 'touchend') // end the touchevent started
       assert.strictEqual(dest.style.visibility, 'hidden', 'did not hide on click-away')
     } else {
-      sendMouseSignal(200, 180, src)
-      src.click()
+      testKit.sendMouseSignal(200, 180, src)
+      testKit.sendMouseSignal(100, 80, src, 'mousedown', 1)
       assert.strictEqual(dest.style.visibility, 'hidden', 'did not hide on click-away')
     }
   })
-
 })

@@ -2,7 +2,7 @@
   "name": "contextmenu",
   "version": "0.9.1",
   "description": "Build context menu on mobile and desktop devices without much overhead",
-  "main": "index.js",
+  "main": "dist/contextmenu.js",
   "scripts": {
     "build": "npm run rollup && npm run rollup.esm",
     "karma": "karma start",

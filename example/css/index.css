@@ -1,0 +1,76 @@
+:root {
+  font-size: 0.625rem;
+}
+
+* {
+  box-sizing: border-box;
+  font-family: 'Open-Sans', 'Roboto', Helvetica, Arial, sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Neue', 'Franklin Gothic Medium', 'Arial Narrow', Impact, Haettenschweiler;
+}
+
+body {
+  padding: 0;
+  margin: 0;
+  font-size: 1.6rem;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  line-height: 2.4rem;
+  user-select: none;
+}
+
+.container {
+  max-width: 900px;
+  margin: auto;
+  padding: 0 1.5rem;
+}
+
+p {
+  color: #666666;
+  line-height: 2.3rem;
+  *padding: 1.5rem;
+}
+
+.contextmenu {
+  visibility: hidden;
+  min-width: 250px;
+  max-height: 300px;
+  overflow: hidden;
+  border: 1px solid rgba(0,0,0,.2);
+  box-shadow: 2px 3px 5px 0 rgba(0,0,0,.5);
+  position: fixed;
+  background-color: #ffffff;
+  border-radius: 5px;
+  transform: translate(-50px, -20px);
+}
+
+.contextmenu.on-context {
+  visibility: visible;
+  transform-origin: top left;
+  animation: pop 0.4s cubic-bezier(0.0,0.0,0.2,1) 0s 1 normal forwards;
+  *transition: transform cubic-bezier(0.0,0.0,0.2,1) .2s, max-width cubic-bezier(0.0,0.0,0.2,1) .25s, max-height cubic-bezier(0.0,0.0,0.2,1) .3s;
+}
+
+.contextmenu .ctx {
+  display: flex;
+  flex-direction: column;
+}
+
+.contextmenu .ctx a {
+  padding: 10px 7px;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.contextmenu .ctx a:hover {
+  background-color: #f1f1f1;
+}
+
+@keyframes pop {
+  from {
+    transform: translate(-50px, -20px) scale(0.2);
+    opacity: 0.8
+  }
+
+  to {
+    transform: translate(0) scale(1);
+    opacity: 1;
+  }
+}

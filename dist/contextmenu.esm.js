@@ -32,10 +32,6 @@ function clickAway(src, handler, away) {
     var event = Device.isMobile ? 'touchstart' : 'mousedown';
     var listener = function (mouseEvent) {
         // @ts-ignore
-        if (mouseEvent.type === 'mousedown' && mouseEvent.buttons !== 1) {
-            return;
-        }
-        // @ts-ignore
         var path = mouseEvent.path ||
             (mouseEvent.composedPath && mouseEvent.composedPath()) || findPath(mouseEvent.target);
         if (!(path.find(function (target) { return target === src; })) && typeof handler === 'function') {

@@ -111,4 +111,62 @@ describe('Positioning', function() {
       })
     }
   })
+
+  it('Static::should be unmodified and independent of any factor', function(done) {
+    var x = window.outerWidth - dest.offsetWidth / 2
+    var y = window.outerHeight - dest.offsetHeight / 2
+    ctxMenu.setup({
+      timeout: 0,
+      position: 'static'
+    })
+    ctxMenu.on('validate', function(position) {
+      dest.style.left = position.x + 'px'
+      dest.style.top = position.y + 'px'
+    })
+    ctxMenu.activate()
+
+    if (navigator.maxTouchPoints) {
+      testKit.sendTouchSignal(x, y, src, null, function() {
+        assert.strictEqual(dest.style.left, x + 'px', 'x positioning is faulty')
+        assert.strictEqual(dest.style.top, y + 'px', 'y positioning is faulty')
+        testKit.sendTouchSignal(x, y, src, 'touchend') // end the touchevent started
+        done()
+      })
+    } else {
+      testKit.sendMouseSignal(x, y, src, null, null, function() {
+        assert.strictEqual(dest.style.left, x + 'px', 'x positioning is faulty')
+        assert.strictEqual(dest.style.top, y + 'px', 'y positioning is faulty')
+        done()
+      })
+    }
+  })
+
+  it('Fixed::should be centrally positioned at all times', function(done) {
+    var x = 70
+    var y = 80
+    ctxMenu.setup({
+      timeout: 0,
+      position: 'fixed'
+    })
+    ctxMenu.on('validate', function(position) {
+      dest.style.left = position.y + 'px'
+      dest.style.top = position.y + 'px'
+    })
+    ctxMenu.activate()
+
+    if (navigator.maxTouchPoints) {
+      testKit.sendTouchSignal(x, y, src, null, function() {
+        assert.notStrictEqual(dest.style.left, x + 'px', 'x positioning is faulty')
+        assert.notStrictEqual(dest.style.top, y + 'px', 'y positioning is faulty')
+        testKit.sendTouchSignal(x, y, src, 'touchend') // end the touchevent started
+        done()
+      })
+    } else {
+      testKit.sendMouseSignal(x, y, src, null, null, function() {
+        assert.notStrictEqual(dest.style.left, x + 'px', 'x positioning is faulty')
+        assert.notStrictEqual(dest.style.top, y + 'px', 'y positioning is faulty')
+        done()
+      })
+    }
+  })
 })

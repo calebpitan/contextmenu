@@ -10,10 +10,6 @@ export function clickAway(src: HTMLElement, handler: () => any, away: Document |
   const event = Device.isMobile ? 'touchstart' : 'mousedown'
   const listener =  (mouseEvent: Event) => {
     // @ts-ignore
-    if (mouseEvent.type === 'mousedown' && mouseEvent.buttons !== 1) {
-      return
-    }
-    // @ts-ignore
     const path: EventTarget[] = <EventTarget[]> mouseEvent.path ||
       (mouseEvent.composedPath && mouseEvent.composedPath()) || findPath(<EventTarget> mouseEvent.target)
     if (!(path.find((target) => target === src)) && typeof handler === 'function') {

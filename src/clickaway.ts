@@ -12,7 +12,8 @@ export function clickAway(src: HTMLElement, handler: () => any, away: Document |
     // @ts-ignore
     const path: EventTarget[] = <EventTarget[]> mouseEvent.path ||
       (mouseEvent.composedPath && mouseEvent.composedPath()) || findPath(<EventTarget> mouseEvent.target)
-    if (!(path.find((target) => target === src)) && typeof handler === 'function') {
+    const style = getComputedStyle(src)
+    if (!(path.find((target) => target === src)) && typeof handler === 'function' && (style.display !== 'none' && style.visibility !== 'hidden')) {
       handler()
     }
   }

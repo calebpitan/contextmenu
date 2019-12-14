@@ -1,6 +1,8 @@
 # Position
 
-A proper positioning of the contextmenu in the view window should not be treated with triviality. Setting your contextmenu with the most appropriate positioning system, make it more accessible and boosts user's experience.
+A proper positioning of the contextmenu in the view window should not be treated with triviality. Setting your contextmenu with the most appropriate positioning system, makes it more accessible and boosts user experience.
+
+> **Note:** This positioning system is not related to, same as or functions as the css positioning of the element. The css positioning of the contextmenu element should be `fixed`.
 
 # Positioning system
 
@@ -24,11 +26,12 @@ if (viewportQuery.right) { // contextmenu exceeds viewport from the right
   target.style.bottom = position.x + 'px';
 }
 ```
+This illustration is in its simplest form, [check a live use case in our example](https://github.com/calebpitan/contextmenu/blob/master/example/js/index.js) to see for yourself.
 
 ## Absolute
 
-The `absolute` positioning system is independent of direction. It is absolutely _toply_ and _leftly_ positioned. A unique feature of the `absolute` quite similar to the relative is; contextmenu shouldn't exceed viewport. The excessive dimension that exceeds viewport is calculated and subtracted from the original positional values&mdash;**recalibration**
+The `absolute` positioning system is independent of direction. It is absolutely _toply_ and _leftly_ positioned. A unique feature of the `absolute`, quite similar to the relative is; contextmenu shouldn't exceed viewport. The excessive dimension that exceeds viewport is calculated and subtracted from the original positional values&mdash;**recalibration**
 
 ## Fixed
 
-The `fixed` position only does the good of centrally positioning the contextmenu. It keeps it at the middle of the viewport.
+The `fixed` position only does the good of centrally positioning the contextmenu. It keeps it at the middle of the viewport. It is advised that a backdrop should be used when using our fixed positioning or when you centrally place the contextmenu, probably using css.

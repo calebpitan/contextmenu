@@ -1,6 +1,6 @@
 # Application Programming Interface
 
-The ContextMenu API, simple and easy to adapt into any new or already existing app, defines methods with which it portrays it simplicity of flowing with your app.
+The ContextMenu API, simple and easy to adapt into any new or already existing app, defines methods with which it portrays it simplicity and fluidity with your app.
 
 ## constructor
 
@@ -22,10 +22,10 @@ The constructor takes three arguments:
 ## setup
 
 ```ts
-setup(setup: ContextMenuSetup = { timeout: 800, position: 'absolute' })
+setup(setup: ContextMenuSetup = { timeout: 800, position: 'relative' })
 ```
 
-The `setup` method does some little preparations before activating the contextmenu activity. It takes one argument a type of the `ContextMenuSetup` interface, which defines bothe timeout and position of the contextmenu.
+The `setup` method does some little preparations before activating the contextmenu activity. It takes one argument a type of the `ContextMenuSetup` interface, which defines both timeout and position of the contextmenu.
 
 ```ts
 interface ContextMenuSetup {
@@ -35,7 +35,7 @@ interface ContextMenuSetup {
 ```
 
 **timeout**  
-This is the amount of time it takes im milliseconds to open a menu on long press on a mobile or touch device.
+This is the amount of time it takes in milliseconds to open a menu on long press on a mobile or touch device.
 
 **position**  
 This defines the position of the menu. Have a peek at [position.md](position.md) to understand the positioning system.
@@ -71,7 +71,7 @@ The `on` method helps register event handlers. It accepts two arguments.
 
 ## activate
 
-The `activate` method helps turn on the ContextMenu and makes it actively waiting for a contextmenu event, and other associated, registered events.
+The `activate` method helps turn on the ContextMenu and makes it actively wait for a contextmenu event, and other associated, registered events.
 
 ## deactivate
 

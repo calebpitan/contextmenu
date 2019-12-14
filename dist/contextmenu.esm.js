@@ -1,3 +1,9 @@
+/*! Contextmenu v0.1.0
+* Copyright (c) 2019 Caleb Pitan
+* Licensed under the MIT License
+* https://github.com/calebpitan/contextmenu/blob/master/LICENSE
+* Build Date: 2019-12-14T16:02:54.377Z
+*/
 var Device = {
     isMobile: false,
     isDesktop: false
@@ -34,7 +40,8 @@ function clickAway(src, handler, away) {
         // @ts-ignore
         var path = mouseEvent.path ||
             (mouseEvent.composedPath && mouseEvent.composedPath()) || findPath(mouseEvent.target);
-        if (!(path.find(function (target) { return target === src; })) && typeof handler === 'function') {
+        var style = getComputedStyle(src);
+        if (!(path.find(function (target) { return target === src; })) && typeof handler === 'function' && (style.display !== 'none' && style.visibility !== 'hidden')) {
             handler();
         }
     };

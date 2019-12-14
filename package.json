@@ -1,6 +1,6 @@
 {
   "name": "contextmenu",
-  "version": "0.9.1",
+  "version": "0.1.0",
   "description": "Build context menu on mobile and desktop devices without much overhead",
   "main": "dist/contextmenu.js",
   "scripts": {

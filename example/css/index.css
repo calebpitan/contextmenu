@@ -30,8 +30,10 @@ p {
 
 .contextmenu {
   visibility: hidden;
-  min-width: 250px;
-  max-height: 300px;
+  width: auto;
+  height: auto;
+  max-width: 320px;
+  max-height: 450px;
   overflow: hidden;
   border: 1px solid rgba(0,0,0,.2);
   box-shadow: 2px 3px 5px 0 rgba(0,0,0,.5);
@@ -44,8 +46,9 @@ p {
 .contextmenu.on-context {
   visibility: visible;
   transform-origin: top left;
-  animation: pop 0.4s cubic-bezier(0.0,0.0,0.2,1) 0s 1 normal forwards;
-  *transition: transform cubic-bezier(0.0,0.0,0.2,1) .2s, max-width cubic-bezier(0.0,0.0,0.2,1) .25s, max-height cubic-bezier(0.0,0.0,0.2,1) .3s;
+  transform: translate(0, 0);
+  *animation: pop 0.4s cubic-bezier(0.0,0.0,0.2,1) 0s 1 normal forwards;
+  transition: transform cubic-bezier(0.0,0.0,0.2,1) .6s, width cubic-bezier(0.0,0.0,0.2,1) .25s, height cubic-bezier(0.0,0.0,0.2,1) .25s;
 }
 
 .contextmenu .ctx {
@@ -55,6 +58,7 @@ p {
 
 .contextmenu .ctx a {
   padding: 10px 7px;
+  width: 200px;
   text-decoration: none;
   white-space: nowrap;
 }

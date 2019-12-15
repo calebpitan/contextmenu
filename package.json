@@ -1,6 +1,6 @@
 {
-  "name": "contextmenu",
-  "version": "0.1.0",
+  "name": "@calebpitan/contextmenu",
+  "version": "0.1.1",
   "description": "Build context menu on mobile and desktop devices without much overhead",
   "main": "dist/contextmenu.js",
   "scripts": {
@@ -20,7 +20,8 @@
     "contextmenu",
     "html",
     "design",
-    "gui"
+    "gui",
+    "web"
   ],
   "author": "Caleb Pitan",
   "license": "MIT",
@@ -40,5 +41,11 @@
     "tslint": "^5.18.0",
     "tslint-eslint-rules": "^5.4.0",
     "typescript": "^3.5.3"
-  }
+  },
+  "directories": {
+    "doc": "docs",
+    "example": "example",
+    "test": "tests"
+  },
+  "dependencies": {}
 }

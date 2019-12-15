@@ -10,6 +10,6 @@ Installing **ContextMenu** is just as easy as every other JavaScript library. To
 
   2. Install from npm.
   ```bash
-  npm install --save contextmenu
+  npm install --save @calebpitan/contextmenu
   ```
   This installs contextmenu locally and saves it as a dependency in your `package.json` file.

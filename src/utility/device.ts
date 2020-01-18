@@ -1,4 +1,6 @@
 export const Device = {
+  isTouch: false,
+  isMouse: false,
   isMobile: false,
   isDesktop: false
 }
@@ -15,6 +17,16 @@ Object.defineProperty(Device, 'isMobile', {
 })
 Object.defineProperty(Device, 'isDesktop', {
   get: () => !Device.isMobile,
+  enumerable: true,
+  configurable: true
+})
+Object.defineProperty(Device, 'isTouch', {
+  get: () => !!(navigator.maxTouchPoints || navigator.msMaxTouchPoints),
+  enumerable: true,
+  configurable: true
+})
+Object.defineProperty(Device, 'isMouse', {
+  get: () => !Device.isTouch,
   enumerable: true,
   configurable: true
 })

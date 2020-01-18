@@ -111,7 +111,7 @@ export default class ContextMenu {
       this.handlers[VALIDATE].call(this, response, this.ps.viewportExcess(signal))
     }
 
-    if (Device.isMobile && (navigator.maxTouchPoints || navigator.msMaxTouchPoints)) {
+    if (Device.isTouch) {
       this.src.addEventListener(Events.TOUCHSTART, this.start, EVENT_OPT)
     } else {
       this.src.addEventListener(Events.CTXMENU, this.ctxhandler , EVENT_OPT)

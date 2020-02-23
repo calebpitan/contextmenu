@@ -32,7 +32,8 @@ export default class Position {
     return new Path(x, y)
   }
 
-  viewportExcess({ x, y }: Path): ViewPortQuery {
+  viewportExcess(path: Path): ViewPortQuery {
+    const { x, y } = this.transformPath(path)
     const vpq: ViewPortQuery = {
       top: false,
       left: false,
@@ -74,5 +75,15 @@ export default class Position {
 
   private getRelativeY(y: number): number {
     return this.elementBox.height + y > this.box.height ? this.box.height - y : y
+  }
+
+  private transformPath(path: Path): Path {
+    if (this.viewBoxIsGridLayout && this.viewBoxBoundingClientRect !== null) {
+      return new Path(
+        path.x - this.viewBoxBoundingClientRect.left,
+        path.y - this.viewBoxBoundingClientRect.top
+      )
+    }
+    return path
   }
 }

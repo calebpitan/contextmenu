@@ -11,11 +11,30 @@ export interface ViewPortQuery {
 export default class Position {
   box: Box2D
   elementBox: Box2D
+  viewBox: HTMLElement | Window
   private positioning: Positioning
-  constructor(box: Box2D, elementBox: Box2D) {
+  private vBoxClientRect: DOMRect | null
+
+  constructor(box: Box2D, elementBox: Box2D, viewBox: HTMLElement | Window) {
     this.box = box
     this.elementBox = elementBox
+    this.viewBox = viewBox
     this.positioning = 'relative'
+    this.vBoxClientRect = null
+  }
+
+  private get viewBoxIsWindow(): boolean {
+    return window && this.viewBox === window && Object.is(this.viewBox, window)
+  }
+
+  // {DOMRect | null} actually not {any}
+  private get viewBoxBoundingClientRect(): any {
+    if (!this.viewBoxIsWindow) {
+      // getBoundingClientRect is a expensive function, we shouldn't be calling it always.
+      this.vBoxClientRect = this.vBoxClientRect === null ? (<HTMLElement> this.viewBox).getBoundingClientRect() : this.vBoxClientRect
+      return this.vBoxClientRect
+    }
+    return null
   }
 
   private get viewBoxIsGridLayout(): boolean {
@@ -26,7 +45,8 @@ export default class Position {
     this.positioning = position
   }
 
-  from({ x: x0, y: y0 }: Path) {
+  from(signal: Path) {
+    const { x: x0, y: y0 } = this.transformPath(signal)
     const x = this.generateX(x0)
     const y = this.generateY(y0)
     return new Path(x, y)

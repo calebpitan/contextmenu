@@ -3,10 +3,7 @@
   var ctxSource = document.querySelector('body')
   var target = document.querySelector('.ctx-target')
   var animate = scale(target, 5, 5)
-  var ctxMenu = new ContextMenu(ctxSource, target, {
-    width: window.innerWidth,
-    height: window.innerHeight
-  })
+  var ctxMenu = new ContextMenu(ctxSource, target, window)
   ctxMenu.setup({
     timeout: 800,
     position: 'relative'

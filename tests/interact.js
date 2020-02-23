@@ -10,10 +10,7 @@ describe('Functional Interaction', function() {
     dest.style.height = '200px'
     dest.style.visibility = 'hidden'
     document.body.appendChild(dest)
-    ctxMenu = new ContextMenu(src, dest, {
-      width: window.outerWidth,
-      height: window.outerHeight
-    })
+    ctxMenu = new ContextMenu(src, dest, window)
   })
 
   afterEach(function() {

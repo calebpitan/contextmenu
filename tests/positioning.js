@@ -11,10 +11,7 @@ describe('Positioning', function() {
     dest.style.height = '200px'
     dest.style.visibility = 'hidden'
     document.body.appendChild(dest)
-    ctxMenu = new ContextMenu(src, dest, {
-      width: window.outerWidth,
-      height: window.outerHeight
-    })
+    ctxMenu = new ContextMenu(src, dest, window)
   })
 
   afterEach(function() {
@@ -52,25 +49,25 @@ describe('Positioning', function() {
   })
 
   it('Relative::should be positioned based on how menu overflows viewport', function(done) {
-    var x = window.outerWidth - dest.offsetWidth / 2
-    var y = window.outerHeight - dest.offsetHeight / 2
+    var x = window.innerWidth - dest.offsetWidth / 2 // if viewport is window, innerWidth is implicitly used in lieu of outerWidth.
+    var y = window.innerHeight - dest.offsetHeight / 2
     var G_viewportQuery = null
     function wrap_assertion() {
       if (G_viewportQuery.right && !G_viewportQuery.bottom) {
-        assert.strictEqual(dest.style.top, y + 'px', 'y positioning is faulty')
-        assert.strictEqual(dest.style.right, dest.offsetWidth / 2 + 'px', 'x positioning is faulty')
+        assert.strictEqual(dest.style.top, y + 'px', 'top-right y positioning is faulty')
+        assert.strictEqual(dest.style.right, dest.offsetWidth / 2 + 'px', 'top-right x positioning is faulty')
       }
       else if (G_viewportQuery.right && G_viewportQuery.bottom) {
-        assert.strictEqual(dest.style.bottom, dest.offsetHeight / 2 + 'px', 'y positioning is faulty')
-        assert.strictEqual(dest.style.right, dest.offsetWidth / 2 + 'px', 'x positioning is faulty')
+        assert.strictEqual(dest.style.bottom, dest.offsetHeight / 2 + 'px', 'bottom-right y positioning is faulty')
+        assert.strictEqual(dest.style.right, dest.offsetWidth / 2 + 'px', 'bottom-right x positioning is faulty')
       }
       else if (!G_viewportQuery.right && G_viewportQuery.bottom) {
-        assert.strictEqual(dest.style.bottom, dest.offsetHeight / 2 + 'px', 'y positioning is faulty')
-        assert.strictEqual(dest.style.left, x + 'px', 'x positioning is faulty')
+        assert.strictEqual(dest.style.bottom, dest.offsetHeight / 2 + 'px', 'bottom-left y positioning is faulty')
+        assert.strictEqual(dest.style.left, x + 'px', 'bottom-left x positioning is faulty')
       }
       else {
-        assert.strictEqual(dest.style.top, y + 'px', 'y positioning is faulty')
-        assert.strictEqual(dest.style.left, x + 'px', 'x positioning is faulty')
+        assert.strictEqual(dest.style.top, y + 'px', 'top-left y positioning is faulty')
+        assert.strictEqual(dest.style.left, x + 'px', 'top-left x positioning is faulty')
       }
     }
     ctxMenu.setup({

@@ -32,8 +32,10 @@ export interface ContextMenuSetup {
 }
 
 export default class ContextMenu {
+
   readonly src: HTMLElement
   readonly dest: HTMLElement
+  readonly viewBox: HTMLElement | Window
   timeout: number
   positioning: Positioning
   private handlers: Handler
@@ -42,15 +44,33 @@ export default class ContextMenu {
   private clickAway!: ClickAwaySwitch
   private ctxhandler!: (ctxEvent: Event) => any
 
-  constructor(src: HTMLElement, dest: HTMLElement, windowSize: Size) {
+  constructor(src: HTMLElement, dest: HTMLElement, viewBox: HTMLElement | Window) {
     this.src = src
     this.dest = dest
+    this.viewBox = viewBox
     this.timeout = 800
     this.positioning = 'relative'
     this.handlers = <Handler> {}
-    const box = new Box2D(0, 0, windowSize.width, windowSize.height)
+    const box = new Box2D(0, 0, this.windowSize.width, this.windowSize.height)
     const box2 = new Box2D(0, 0, this.dest.offsetWidth, this.dest.offsetHeight)
-    this.ps = new Position(box, box2)
+    this.ps = new Position(box, box2, this.viewBox)
+  }
+
+  private get viewBoxIsWindow(): boolean {
+    return window && this.viewBox === window && Object.is(this.viewBox, window)
+  }
+
+  private get windowSize(): Size {
+    if (this.viewBoxIsWindow) {
+      return {
+        width: (<Window> this.viewBox).innerWidth,
+        height: (<Window> this.viewBox).innerHeight
+      }
+    }
+    return {
+      width: (<HTMLElement> this.viewBox).offsetWidth,
+      height: (<HTMLElement> this.viewBox).offsetHeight
+    }
   }
 
   // tslint:disable-next-line:member-ordering
@@ -104,6 +124,7 @@ export default class ContextMenu {
       }, this.timeout)
       touchMoved = false
     }
+
     this.ctxhandler = (ctxEvent) => {
       ctxEvent.preventDefault()
       const signal = new Path((<MouseEvent> ctxEvent).clientX, (<MouseEvent> ctxEvent).clientY)

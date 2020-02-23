@@ -31,6 +31,7 @@ export default class Position {
   private get viewBoxBoundingClientRect(): any {
     if (!this.viewBoxIsWindow) {
       // getBoundingClientRect is a expensive function, we shouldn't be calling it always.
+      // @ts-ignore
       this.vBoxClientRect = this.vBoxClientRect === null ? (<HTMLElement> this.viewBox).getBoundingClientRect() : this.vBoxClientRect
       return this.vBoxClientRect
     }

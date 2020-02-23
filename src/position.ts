@@ -18,6 +18,10 @@ export default class Position {
     this.positioning = 'relative'
   }
 
+  private get viewBoxIsGridLayout(): boolean {
+    return !this.viewBoxIsWindow && (<HTMLElement> this.viewBox).offsetLeft !== this.viewBoxBoundingClientRect.left
+  }
+
   set type(position: Positioning) {
     this.positioning = position
   }

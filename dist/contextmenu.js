@@ -1,8 +1,8 @@
-/*! Contextmenu v0.1.0
-* Copyright (c) 2019 Caleb Pitan
+/*! Contextmenu v0.1.1
+* Copyright (c) 2020 Caleb Pitan
 * Licensed under the MIT License
 * https://github.com/calebpitan/contextmenu/blob/master/LICENSE
-* Build Date: 2019-12-14T16:02:33.902Z
+* Build Date: 2020-02-23T23:44:03.884Z
 */
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
@@ -11,6 +11,8 @@
 }(this, function () { 'use strict';
 
   var Device = {
+      isTouch: false,
+      isMouse: false,
       isMobile: false,
       isDesktop: false
   };
@@ -27,6 +29,16 @@
   });
   Object.defineProperty(Device, 'isDesktop', {
       get: function () { return !Device.isMobile; },
+      enumerable: true,
+      configurable: true
+  });
+  Object.defineProperty(Device, 'isTouch', {
+      get: function () { return !!(navigator.maxTouchPoints || navigator.msMaxTouchPoints); },
+      enumerable: true,
+      configurable: true
+  });
+  Object.defineProperty(Device, 'isMouse', {
+      get: function () { return !Device.isTouch; },
       enumerable: true,
       configurable: true
   });
@@ -66,11 +78,41 @@
   }());
 
   var Position = /** @class */ (function () {
-      function Position(box, elementBox) {
+      function Position(box, elementBox, viewBox) {
           this.box = box;
           this.elementBox = elementBox;
+          this.viewBox = viewBox;
           this.positioning = 'relative';
+          this.vBoxClientRect = null;
       }
+      Object.defineProperty(Position.prototype, "viewBoxIsWindow", {
+          get: function () {
+              return window && this.viewBox === window && Object.is(this.viewBox, window);
+          },
+          enumerable: true,
+          configurable: true
+      });
+      Object.defineProperty(Position.prototype, "viewBoxBoundingClientRect", {
+          // {DOMRect | null} actually not {any}
+          get: function () {
+              if (!this.viewBoxIsWindow) {
+                  // getBoundingClientRect is a expensive function, we shouldn't be calling it always.
+                  // @ts-ignore
+                  this.vBoxClientRect = this.vBoxClientRect === null ? this.viewBox.getBoundingClientRect() : this.vBoxClientRect;
+                  return this.vBoxClientRect;
+              }
+              return null;
+          },
+          enumerable: true,
+          configurable: true
+      });
+      Object.defineProperty(Position.prototype, "viewBoxIsGridLayout", {
+          get: function () {
+              return !this.viewBoxIsWindow && this.viewBox.offsetLeft !== this.viewBoxBoundingClientRect.left;
+          },
+          enumerable: true,
+          configurable: true
+      });
       Object.defineProperty(Position.prototype, "type", {
           set: function (position) {
               this.positioning = position;
@@ -78,14 +120,14 @@
           enumerable: true,
           configurable: true
       });
-      Position.prototype.from = function (_a) {
-          var x0 = _a.x, y0 = _a.y;
+      Position.prototype.from = function (signal) {
+          var _a = this.transformPath(signal), x0 = _a.x, y0 = _a.y;
           var x = this.generateX(x0);
           var y = this.generateY(y0);
           return new Path(x, y);
       };
-      Position.prototype.viewportExcess = function (_a) {
-          var x = _a.x, y = _a.y;
+      Position.prototype.viewportExcess = function (path) {
+          var _a = this.transformPath(path), x = _a.x, y = _a.y;
           var vpq = {
               top: false,
               left: false,
@@ -128,6 +170,12 @@
       Position.prototype.getRelativeY = function (y) {
           return this.elementBox.height + y > this.box.height ? this.box.height - y : y;
       };
+      Position.prototype.transformPath = function (path) {
+          if (this.viewBoxIsGridLayout && this.viewBoxBoundingClientRect !== null) {
+              return new Path(path.x - this.viewBoxBoundingClientRect.left, path.y - this.viewBoxBoundingClientRect.top);
+          }
+          return path;
+      };
       return Position;
   }());
 
@@ -169,16 +217,40 @@
   // @ts-ignore
   var DUMP = window[NAME];
   var ContextMenu = /** @class */ (function () {
-      function ContextMenu(src, dest, windowSize) {
+      function ContextMenu(src, dest, viewBox) {
           this.src = src;
           this.dest = dest;
+          this.viewBox = viewBox;
           this.timeout = 800;
           this.positioning = 'relative';
           this.handlers = {};
-          var box = new Box2D(0, 0, windowSize.width, windowSize.height);
+          var box = new Box2D(0, 0, this.windowSize.width, this.windowSize.height);
           var box2 = new Box2D(0, 0, this.dest.offsetWidth, this.dest.offsetHeight);
-          this.ps = new Position(box, box2);
+          this.ps = new Position(box, box2, this.viewBox);
       }
+      Object.defineProperty(ContextMenu.prototype, "viewBoxIsWindow", {
+          get: function () {
+              return window && this.viewBox === window && Object.is(this.viewBox, window);
+          },
+          enumerable: true,
+          configurable: true
+      });
+      Object.defineProperty(ContextMenu.prototype, "windowSize", {
+          get: function () {
+              if (this.viewBoxIsWindow) {
+                  return {
+                      width: this.viewBox.innerWidth,
+                      height: this.viewBox.innerHeight
+                  };
+              }
+              return {
+                  width: this.viewBox.offsetWidth,
+                  height: this.viewBox.offsetHeight
+              };
+          },
+          enumerable: true,
+          configurable: true
+      });
       // tslint:disable-next-line:member-ordering
       ContextMenu.namespace = function (name) {
           // @ts-ignore
@@ -234,7 +306,7 @@
               var response = _this.ps.from(signal);
               _this.handlers[VALIDATE].call(_this, response, _this.ps.viewportExcess(signal));
           };
-          if (Device.isMobile && (navigator.maxTouchPoints || navigator.msMaxTouchPoints)) {
+          if (Device.isTouch) {
               this.src.addEventListener(Events.TOUCHSTART, this.start, EVENT_OPT);
           }
           else {
